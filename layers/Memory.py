@@ -4,6 +4,7 @@ class Memory:
     context=[]
     def __init__(self):
         self.passwords=[{"AWS":"abcd1234","OpenAI":"TSAIistheBEST"}]
+        
 
     def getMemory(self):
         return self.context

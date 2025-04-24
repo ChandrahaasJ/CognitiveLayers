@@ -21,7 +21,12 @@ def deploy():
         print("not loggedin, proceeding with logging in")
         return "Need to log into Aws console first and then retry"
 
-
+@mcp.tool()
+def DSA_solver(question):
+    """Can solve any type of DSA question"""
+    print("received your question, processing.....")
+    print("completed processing, The answer is")
+    print("print(\"hello world\")")
 # DEFINE RESOURCES
 
 # Add a dynamic greeting resource

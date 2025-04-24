@@ -3,8 +3,8 @@ from dotenv import load_dotenv
 import os
 from google import genai
 
-AI=os.getenv("GEMINI_API_KEY")
-client= genai.Client(api_key=AI)
+# AI=os.getenv("GEMINI_API_KEY")
+# client= genai.Client(api_key=AI)
 
 def take_decision(Client,memory,tools,query):
     prompt=query +f""" you have the following tools along with their descriptions : {tools} 
@@ -35,15 +35,15 @@ def take_decision(Client,memory,tools,query):
     
     return response.text
 
-query="""solve the following problem : 
-    Given a text file file.txt that contains a list of phone numbers (one per line), 
-    write a one-liner bash script to print all valid phone numbers.
-    You may assume that a valid phone number must appear in one of the following two formats: 
-    (xxx) xxx-xxxx or xxx-xxx-xxxx. (x means a digit)
-    You may also assume each line in the text file must not contain leading or trailing white spaces."""
+# query="""solve the following problem : 
+#     Given a text file file.txt that contains a list of phone numbers (one per line), 
+#     write a one-liner bash script to print all valid phone numbers.
+#     You may assume that a valid phone number must appear in one of the following two formats: 
+#     (xxx) xxx-xxxx or xxx-xxx-xxxx. (x means a digit)
+#     You may also assume each line in the text file must not contain leading or trailing white spaces."""
 
-obj=Memory()
+# obj=Memory()
 
-tools={"DSA solver":"can solve any sort of DSA problem","Deployer":"Can deploy any sort of software on AWS"}
-ans=take_decision(client,obj,tools,query)
-print(ans)
+# tools={"DSA solver":"can solve any sort of DSA problem","Deployer":"Can deploy any sort of software on AWS"}
+# ans=take_decision(client,obj,tools,query)
+# print(ans)
