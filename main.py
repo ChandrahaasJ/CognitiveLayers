@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 from layers.Memory import Memory
 from layers.Decision import take_decision
+from layers.Perception import perception_extraction
 from google import genai
 load_dotenv(dotenv_path=r"C:\EAG\.env")
 ITERATIONS=3
@@ -30,7 +31,7 @@ async def main(query : str):
                             print("[agent] MCP session initialized")
                             tools=await session.list_tools()
                             print(tools)
-                            facts=perception_extraction(query)
+                            facts=perception_extraction(client,query)
                             memory=Memory()
                             for i in range(ITERATIONS):
                                 print(f"================================= Itearation {i+1}========================================================")
@@ -38,9 +39,10 @@ async def main(query : str):
                                     print("[Agent] processing the query sent user")
                                 print(f"[Agent] processing the query sent from the iteration {i+1}")
                                 print("[Perception_Agent] the facts from the query are {facts}")
+                                imp_memory=memory.recall_Memory(facts)
                                 print("[Memory Agent] Retrieved your passcodes and prvious conversations")
                                 print("[Decision Agent] making a decision from the facts,memories and tools available")
-                                ans=take_decision(client,memory,tools,query)
+                                ans=take_decision(client,imp_memory,tools,query)
                                 print("[Agent] Decision taken by the decision_agent now sending the decision to Action Agent")
                                 print("[Action Agent] Received the Decisions, processing ....")
                                 action=take_action(ans) 
