@@ -32,5 +32,11 @@ def perception_extraction(client,query):
             contents=prompt
         )
     raw=response.text.strip()
-    clean = re.sub(r"^```json|```$", "", raw.strip(), flags=re.MULTILINE).strip()
-    return eval(clean)
+    print(raw)
+    if "json" in raw:
+        clean = re.sub(r"^```json|```$", "", raw.strip(), flags=re.MULTILINE).strip()
+        return eval(clean)
+    else:
+        return raw
+    
+    

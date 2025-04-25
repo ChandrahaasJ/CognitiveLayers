@@ -2,9 +2,9 @@ from dotenv import load_dotenv
 import os
 from google import genai
 import re
-load_dotenv(dotenv_path=r"C:\EAG\.env")
-AI=os.getenv("GEMINI_API_KEY")
-client= genai.Client(api_key=AI)
+# load_dotenv(dotenv_path=r"C:\EAG\.env")
+# AI=os.getenv("GEMINI_API_KEY")
+# client= genai.Client(api_key=AI)
 
 class Memory:
     passwords=[]
@@ -94,12 +94,3 @@ class Memory:
         clean = re.sub(r"^```json|```$", "", raw.strip(), flags=re.MULTILINE).strip()
         return eval(clean)
 
-
-obj=Memory()
-facts={
-  "intent": "set_reminder",
-  "datetime": "next Wednesday at 4:00 PM",
-  "message": "I have a birthday party to attend"
-}
-ans=obj.recall_Memory(client,facts)
-print(ans)

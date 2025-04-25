@@ -6,6 +6,7 @@ import os
 from layers.Memory import Memory
 from layers.Decision import take_decision
 from layers.Perception import perception_extraction
+from layers.Action import take_action
 from google import genai
 load_dotenv(dotenv_path=r"C:\EAG\.env")
 ITERATIONS=3
@@ -30,29 +31,23 @@ async def main(query : str):
                             await session.initialize()
                             print("[agent] MCP session initialized")
                             tools=await session.list_tools()
-                            print(tools)
-                            facts=perception_extraction(client,query)
+                            #print(tools)
                             memory=Memory()
-                            for i in range(ITERATIONS):
-                                print(f"================================= Itearation {i+1}========================================================")
-                                if(i==0):
-                                    print("[Agent] processing the query sent user")
-                                print(f"[Agent] processing the query sent from the iteration {i+1}")
-                                print("[Perception_Agent] the facts from the query are {facts}")
-                                imp_memory=memory.recall_Memory(facts)
-                                print("[Memory Agent] Retrieved your passcodes and prvious conversations")
-                                print("[Decision Agent] making a decision from the facts,memories and tools available")
-                                ans=take_decision(client,imp_memory,tools,query)
-                                print("[Agent] Decision taken by the decision_agent now sending the decision to Action Agent")
-                                print("[Action Agent] Received the Decisions, processing ....")
-                                action=take_action(ans) 
-                                if "FINAL_ANSWER" in action:
-                                    print("[Agent] Exiting Execution")
-                                    break
-                                if(i!=2):
-                                    print("[Agent]Moving on to the next Iteration")
-                                else:
-                                    print("[Agent] Iterations Exhausted, now exiting the execution")
+                            prompt=f"you have {3-1} iterations remaining so solve this query by utitlising the iterations. You may end the return the FINAL_ANSWER befor the iterations end as well"
+                            for i in range(3):
+                                prompt+=query
+                                facts=perception_extraction(client,prompt)
+                                print("[AGENT] Facts gathered")
+                                
+                                print("[AGENT] gathering memory")
+                                mem=memory.recall_Memory(client,facts)
+                                print("[AGENT] memory gathered")
+                                print("[AGENT] taking decision")
+                                tools={"DSA solver":"can solve any sort of DSA problem","Deployer":"Can deploy any sort of software on AWS"}
+                                decision=take_decision(client,mem,tools,query="hi")
+                                print(decision)
+                                prompt=f"this is the decision taken by the model + {decision} what to do next for the initial query : "
+                                prompt+=f"you have {3-1-i-1} iterations remaining so solve this query by utitlising the iterations. You may end the return the FINAL_ANSWER befor the iterations end as well"
                         except Exception as e:
                             print(f"error while initialising the session : {e}")
                 except Exception as e:
